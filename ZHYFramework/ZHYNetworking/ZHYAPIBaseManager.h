@@ -10,16 +10,6 @@
 #import "ZHYURLResponse.h"
 @class ZHYAPIBaseManager;
 
-/*************************************************************************************************/
-/*                                ZHYAPIManagerParamSourceDelegate                                */
-/*************************************************************************************************/
-//让manager能够获取调用API所需要的数据
-@protocol ZHYAPIManagerParamSourceDelegate <NSObject>
-@required
-- (NSDictionary *)paramsForApi:(ZHYAPIBaseManager *)manager;
-@end
-
-
 /*
  当产品要求返回数据不正确或者为空的时候显示一套UI，请求超时和网络不通的时候显示另一套UI时，使用这个enum来决定使用哪种UI。（安居客PAD就有这样的需求，sigh～）
  你不应该在回调数据验证函数里面设置这些值，事实上，在任何派生的子类里面你都不应该自己设置manager的这个状态，baseManager已经帮你搞定了。
@@ -41,6 +31,19 @@ typedef NS_ENUM (NSUInteger, ZHYAPIManagerRequestType){
     ZHYAPIManagerRequestTypeRestGet,
     ZHYAPIManagerRequestTypeRestPost
 };
+
+
+typedef void (^ZHYAPIManagerCompleteHandle)(id responseData, ZHYAPIManagerErrorType errorType);
+
+
+/*************************************************************************************************/
+/*                                ZHYAPIManagerParamSourceDelegate                                */
+/*************************************************************************************************/
+//让manager能够获取调用API所需要的数据
+@protocol ZHYAPIManagerParamSourceDelegate <NSObject>
+@required
+- (NSDictionary *)paramsForApi:(ZHYAPIBaseManager *)manager;
+@end
 
 /*************************************************************************************************/
 /*                                     ZHYAPIManagerValidator                                     */
@@ -112,10 +115,9 @@ typedef NS_ENUM (NSUInteger, ZHYAPIManagerRequestType){
 /**
  *  开始加载数据
  */
-- (NSInteger)loadDataCompleteHandle:(void (^)(ZHYAPIBaseManager *manager,id responseData,ZHYAPIManagerErrorType errorType))completeHandle;
+- (NSInteger)loadDataCompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle;
 
-- (NSInteger)loadDataWithParams:(NSDictionary *)params
-                 CompleteHandle:(void (^)(ZHYAPIBaseManager *manager, id responseData, ZHYAPIManagerErrorType errorType))completeHandle;
+- (NSInteger)loadDataWithParams:(NSDictionary *)params CompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle;
 /**
  *  取消所有网络请求,一般用这个,不用根据Id取消
  */

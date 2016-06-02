@@ -75,7 +75,7 @@
     [[ZHYAPIProxy sharedInstance] cancelRequestWithRequestID:@(requestID)];
 }
 
-- (NSInteger)loadDataCompleteHandle:(void (^)(ZHYAPIBaseManager *,id ,ZHYAPIManagerErrorType ))completeHandle{
+- (NSInteger)loadDataCompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle{
     return [self loadDataWithParams:[self.paramSource paramsForApi:self] CompleteHandle:completeHandle];
 }
 
@@ -93,7 +93,7 @@
     }
 }
 
-- (BOOL)hasCacheWithParams:(NSDictionary *)params CompleteHandle:(void (^)(ZHYAPIBaseManager *,id ,ZHYAPIManagerErrorType ))completeHandle{
+- (BOOL)hasCacheWithParams:(NSDictionary *)params CompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle{
     NSString *serviceIdentifier = self.child.serviceType;
     NSString *methodName = self.child.methodName;
     NSData *result = [self.cache fetchCachedDataWithServiceIdentifier:serviceIdentifier methodName:methodName requestParams:params];
@@ -114,7 +114,7 @@
 #pragma mark - calling api
 
 - (NSInteger)loadDataWithParams:(NSDictionary *)params
-                 CompleteHandle:(void (^)(ZHYAPIBaseManager *, id, ZHYAPIManagerErrorType))completeHandle{
+                 CompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle{
     NSInteger requestId = 0;
     if ([self.validator manager:self isCorrectWithParamsData:params]) {
         
@@ -146,22 +146,22 @@
     return requestId;
 }
 
-- (void)successedOnCallingAPI:(ZHYURLResponse *)response CompleteHandle:(void (^)(ZHYAPIBaseManager *, id, ZHYAPIManagerErrorType))completeHandle{
+- (void)successedOnCallingAPI:(ZHYURLResponse *)response CompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle{
     if ([self.validator manager:self isCorrectWithCallBackData:response.content]) {
         if (([self outdateTimeSeconds] > 0) && !response.isCache) {
             [self.cache saveCacheWithData:response.responseData serviceIdentifier:self.child.serviceType methodName:self.child.methodName requestParams:response.requestParams outdateTimeSeconds:[self outdateTimeSeconds]];
         }
         if (completeHandle){
-            completeHandle(self, response.content, ZHYAPIManagerErrorTypeSuccess);
+            completeHandle(response.content, ZHYAPIManagerErrorTypeSuccess);
         }
     }else{
         [self failedOnCallingAPI:ZHYAPIManagerErrorTypeNoContent CompleteHandle:completeHandle];
     }
 }
 
-- (void)failedOnCallingAPI:(ZHYAPIManagerErrorType)errorType CompleteHandle:(void (^)(ZHYAPIBaseManager *, id, ZHYAPIManagerErrorType))completeHandle{
+- (void)failedOnCallingAPI:(ZHYAPIManagerErrorType)errorType CompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle{
     if (completeHandle){
-        completeHandle(self,nil,errorType);
+        completeHandle(nil,errorType);
     }
 }
 
