@@ -23,8 +23,11 @@ typedef NS_ENUM(NSUInteger, ZHYURLResponseStatus){
 static NSUInteger kZHYCacheCountLimit = 1000; // 最多1000条cache
 
 static BOOL KIsOnline = YES;
-static NSString *KOnlineApiBaseUrl = @"https://api.app.net/";
-static NSString *KOfflineApiBaseUrl = @"";
+
+//static NSString *KOnlineApiBaseUrl = @"http://localhost:8080/BMZY/api/";
+static NSString *KOnlineApiBaseUrl = @"http://localhost:8080/PDC/mapiv1/";
+//static NSString *KOnlineApiBaseUrl = @"http://192.168.3.101:8080/BMZY/api/";
+static NSString *KOfflineApiBaseUrl = @"http://localhost:8080/BMZY/api/";
 
 
 #endif /* ZHYNetworkingConfiguration_h */

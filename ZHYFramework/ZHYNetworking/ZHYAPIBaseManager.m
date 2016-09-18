@@ -27,7 +27,7 @@
     if (!error) { \
         [self successedOnCallingAPI:response CompleteHandle:completeHandle];\
     }else{ \
-        [self failedOnCallingAPI:ZHYAPIManagerErrorTypeNoNetWork CompleteHandle:completeHandle];\
+        [self failedOnCallingAPI:nil errorType:ZHYAPIManagerErrorTypeNoNetWork CompleteHandle:completeHandle];\
     }\
     }];\
     [self.requestIdList addObject:@(REQUEST_ID)];\
@@ -138,10 +138,10 @@
                 }
             }
         }else{
-            [self failedOnCallingAPI:ZHYAPIManagerErrorTypeNoNetWork CompleteHandle:completeHandle];
+            [self failedOnCallingAPI:nil errorType:ZHYAPIManagerErrorTypeNoNetWork CompleteHandle:completeHandle];
         }
     }else{
-        [self failedOnCallingAPI:ZHYAPIManagerErrorTypeParamsError CompleteHandle:completeHandle];
+        [self failedOnCallingAPI:nil errorType:ZHYAPIManagerErrorTypeParamsError CompleteHandle:completeHandle];
     }
     return requestId;
 }
@@ -155,13 +155,13 @@
             completeHandle(response.content, ZHYAPIManagerErrorTypeSuccess);
         }
     }else{
-        [self failedOnCallingAPI:ZHYAPIManagerErrorTypeNoContent CompleteHandle:completeHandle];
+        [self failedOnCallingAPI:response errorType:ZHYAPIManagerErrorTypeNoContent CompleteHandle:completeHandle];
     }
 }
 
-- (void)failedOnCallingAPI:(ZHYAPIManagerErrorType)errorType CompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle{
+- (void)failedOnCallingAPI:(ZHYURLResponse *)response errorType:(ZHYAPIManagerErrorType)errorType CompleteHandle:(ZHYAPIManagerCompleteHandle)completeHandle{
     if (completeHandle){
-        completeHandle(nil,errorType);
+        completeHandle((response ? response.content: nil),errorType);
     }
 }
 
