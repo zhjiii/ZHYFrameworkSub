@@ -18,7 +18,7 @@
 }
 
 - (NSString *)onlineApiBaseUrl{
-    return @"http://test.yunzs.com.cn/apiv2/";
+    return @"http://wx.yunzs.com.cn/apiv2/";
 }
 
 - (NSString *)onlineApiVersion{
@@ -34,7 +34,7 @@
 }
 
 - (NSString *)offlineApiBaseUrl{
-    return KOfflineApiBaseUrl;
+    return @"http://test.yunzs.com.cn/apiv2/";
 }
 
 - (NSString *)offlineApiVersion{
