@@ -22,15 +22,13 @@ typedef NS_ENUM(NSUInteger, ZHYURLResponseStatus){
 
 static NSUInteger kZHYCacheCountLimit = 1000; // 最多1000条cache
 
-static BOOL KIsOnline = NO;
+static BOOL KIsOnline = YES;
 
 //static NSString *KOnlineApiBaseUrl = @"http://192.168.1.103:8080/PDC/mapiv1/";
-
-static NSString *KOnlineApiBaseUrl = @"http://wx.yunzs.com.cn/mapiv1/";
+//static NSString *KOnlineApiBaseUrl = @"http://wx.yunzs.com.cn/mapiv1/";
 //static NSString *KOnlineApiBaseUrl = @"http://test.yunzs.com.cn/mapiv1/";
+static NSString *KOnlineApiBaseUrl = @"http://api.yunzs.com.cn/";
 static NSString *KOfflineApiBaseUrl = @"http://test.yunzs.com.cn/mapiv1/";
-
-
 
 static NSString *kOnlineUploadBaseUrl = @"http://wx.yunzs.com.cn/";
 static NSString *kOfflineUploadBaseUrl = @"http://localhost:8080/PDC/";
